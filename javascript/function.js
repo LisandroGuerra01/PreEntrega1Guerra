@@ -1,3 +1,24 @@
+//Declaración de clase Factura
+class Factura {
+    constructor(numero, fecha, nombre, total, alicuota) {
+        this.numero = numero;
+        this.fecha = fecha;
+        this.nombre = nombre;
+        this.total = total;
+        this.alicuota = alicuota;
+    }
+
+//Método de cálculo del IVA
+    calcularNeto() {
+        return this.total / (1 + (this.alicuota/100));
+    }
+//Método de cálculo del neto
+    calcularIVA() {
+        return this.calcularNeto() * (this.alicuota/100)
+    }
+}
+
+//Declaración de arrays
 let facturaCompras = [];
 let facturaVentas = [];
 
@@ -7,11 +28,11 @@ let facturaVentas = [];
 const cargarFactura = () => {
     let facCompraOVenta = 0;
     do {
-        facCompraOVenta = parseInt(prompt("Ingrese 0 para Compras \nIngrese 1 para Ventas"));
-        if (facCompraOVenta != 0 && facCompraOVenta != 1) {
+        facCompraOVenta = parseInt(prompt("Ingrese 1 para Compras \nIngrese 2 para Ventas"));
+        if (facCompraOVenta != 1 && facCompraOVenta != 2) {
             alert("Opción incorrecta");
         }
-    } while (facCompraOVenta != 0 && facCompraOVenta != 1);
+    } while (facCompraOVenta != 1 && facCompraOVenta != 2);
     let facFecha = prompt("Ingrese la fecha de la factura");
     let facNro = parseInt(prompt("Ingrese el numero de la factura"));
     let facNombre = prompt("Ingrese el nombre del cliente o proveedor");
@@ -37,16 +58,10 @@ const cargarFactura = () => {
         }
     } while (opcionAlicuota != 1 && opcionAlicuota != 2 && opcionAlicuota != 3);
 
-    let fac = {
-        compraOVenta: facCompraOVenta,
-        fecha: facFecha,
-        nro: facNro,
-        nombre: facNombre,
-        total: facTotal,
-        alicuota: facAlicuota
-    }
+// Declaración e inicialización con constructor de objeto fac
+    const fac = new Factura (facNro, facFecha, facNombre, facTotal, facAlicuota)
 
-    if (facCompraOVenta == 0) {
+    if (facCompraOVenta == 1) {
         facturaCompras.push(fac);
     } else {
         facturaVentas.push(fac);
@@ -55,41 +70,30 @@ const cargarFactura = () => {
     alert("Factura cargada con exito");
 }
 
-//Listar Facturas
+//Listar Facturas  de compras
 const listarFacturasCompras = () => {
-    for (let i = 0; i < facturaCompras.length; i++) {
-        console.log(`Fecha: ${facturaCompras[i].fecha} - N°: ${facturaCompras[i].nro} - Nombre: ${facturaCompras[i].nombre} - Total: ${facturaCompras[i].total}`);
+        facturaCompras.forEach(factura => {
+            console.log(`Fecha: ${factura.fecha} - N°: ${factura.numero} - Nombre: ${factura.nombre} - Neto: ${factura.calcularNeto().toFixed(2)} - IVA: ${factura.calcularIVA().toFixed(2)} - Total: ${factura.total}`);
+        })
     }
-}
 
+//Listar Facturas  de ventas
 const listarFacturasVentas = () => {
-    for (let i = 0; i < facturaVentas.length; i++) {
-        console.log(`Fecha: ${facturaVentas[i].fecha} - N°: ${facturaVentas[i].nro} - Nombre: ${facturaVentas[i].nombre} - Total: ${facturaVentas[i].total}`);
-    }
+    facturaVentas.map(factura => {
+        console.log(`Fecha: ${factura.fecha} - N°: ${factura.numero} - Nombre: ${factura.nombre} - Neto: ${factura.calcularNeto().toFixed(2)} - IVA: ${factura.calcularIVA().toFixed(2)} - Total: ${factura.total}`);
+    })
 }
 
-//Ver Saldo IVA
+//Calcular saldo de IVA
 const verSaldoIVA = () => {
-    let totalIvaCompras = 0;
-    let totalIvaVentas = 0;
-    let neto = 0;
-    let saldo = 0;
 
-    for (let i = 0; i < facturaCompras.length; i++) {
-        neto = facturaCompras[i].total / (1 + (facturaCompras[i].alicuota / 100));
-        totalIvaCompras += neto * (facturaCompras[i].alicuota / 100);
-    }
-
-    for (let i = 0; i < facturaVentas.length; i++) {
-        neto = facturaVentas[i].total / (1 + (facturaVentas[i].alicuota / 100));
-        totalIvaVentas += neto * (facturaVentas[i].alicuota / 100);
-    }
-
-    saldo = totalIvaVentas - totalIvaCompras;
+    let totalIvaCompras = facturaCompras.reduce((acum, fac) => acum + fac.calcularIVA(), 0);
+    let totalIvaVentas = facturaVentas.reduce((acum, fac) => acum + fac.calcularIVA(), 0);
+    let saldo = totalIvaVentas - totalIvaCompras;
 
     if (saldo > 0) {
         alert("El saldo de IVA a pagar es de $" + saldo.toFixed(2));
     } else {
-        alert("El saldo de IVA a favor es de $" + saldo.toFixed(2) * (-1));
-    }
+        alert("El saldo de IVA a favor es de $" + saldo.toFixed(2) * (-1));
+    }
 }
