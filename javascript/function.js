@@ -70,8 +70,19 @@ const cargarFactura = () => {
     alert("Factura cargada con exito");
 }
 
+//Ordenar facturas de compras por fecha
+const ordenarFacCompras = () => {
+    facturaCompras.sort((a, b) => a.fecha - b.fecha);
+}
+
+//Ordenar facturas de ventas por fecha            ME ARMA LA LISTA DE MAYOR A MENOR!!!
+const ordenarFacVentas = () => {
+    facturaVentas.sort((a, b) => a.fecha - b.fecha);
+}
+
 //Listar Facturas  de compras
 const listarFacturasCompras = () => {
+    ordenarFacCompras();
         facturaCompras.forEach(factura => {
             console.log(`Fecha: ${factura.fecha} - N°: ${factura.numero} - Nombre: ${factura.nombre} - Neto: ${factura.calcularNeto().toFixed(2)} - IVA: ${factura.calcularIVA().toFixed(2)} - Total: ${factura.total}`);
         })
@@ -79,6 +90,7 @@ const listarFacturasCompras = () => {
 
 //Listar Facturas  de ventas
 const listarFacturasVentas = () => {
+    ordenarFacVentas();
     facturaVentas.map(factura => {
         console.log(`Fecha: ${factura.fecha} - N°: ${factura.numero} - Nombre: ${factura.nombre} - Neto: ${factura.calcularNeto().toFixed(2)} - IVA: ${factura.calcularIVA().toFixed(2)} - Total: ${factura.total}`);
     })
@@ -94,6 +106,37 @@ const verSaldoIVA = () => {
     if (saldo > 0) {
         alert("El saldo de IVA a pagar es de $" + saldo.toFixed(2));
     } else {
-        alert("El saldo de IVA a favor es de $" + saldo.toFixed(2) * (-1));
-    }
+        alert("El saldo de IVA a favor es de $" + saldo.toFixed(2) * (-1));
+    }
 }
+
+//Buscar facturas
+const buscarFactura = () => {
+    let facNro = parseInt(prompt("Ingrese el número de factura"));
+    let facEncontrada = facturaCompras.find(factura => factura.numero == facNro);
+    
+    if(facEncontrada) {
+        console.log(`Fecha: ${facEncontrada.fecha} - N°: ${facEncontrada.numero} - Nombre: ${facEncontrada.nombre} - Neto: ${facEncontrada.calcularNeto().toFixed(2)} - IVA: ${facEncontrada.calcularIVA().toFixed(2)} - Total: ${facEncontrada.total}`);
+    } else {
+        facEncontrada = facturaVentas.find(factura => factura.numero == facNro);
+        if(facEncontrada){
+            console.log(`Fecha: ${facEncontrada.fecha} - N°: ${facEncontrada.numero} - Nombre: ${facEncontrada.nombre} - Neto: ${facEncontrada.calcularNeto().toFixed(2)} - IVA: ${facEncontrada.calcularIVA().toFixed(2)} - Total: ${facEncontrada.total}`);
+        }
+        else{
+            alert("Factura inexistente!")
+        }
+    }
+}
+
+//SORT => sirve para ordenar los elementos de un array
+//Ordenando por nombre
+/* bebidas.sort((item1, item2) => {
+    if (item1.nombre > item2.nombre) {
+        return 1;
+    } else if (item1.nombre < item2.nombre) {
+        return -1;
+    } else {
+        return 0;
+    }
+});
+console.log(bebidas); */
