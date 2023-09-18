@@ -8,11 +8,11 @@ class Factura {
         this.alicuota = alicuota;
     }
 
-    //Método de cálculo del IVA
+//Método de cálculo del IVA
     calcularNeto() {
         return this.total / (1 + (this.alicuota / 100));
     }
-    //Método de cálculo del neto
+//Método de cálculo del neto
     calcularIVA() {
         return this.calcularNeto() * (this.alicuota / 100)
     }
@@ -58,7 +58,7 @@ const cargarFactura = () => {
         }
     } while (opcionAlicuota != 1 && opcionAlicuota != 2 && opcionAlicuota != 3);
 
-    // Declaración e inicialización con constructor de objeto fac
+// Declaración e inicialización con constructor de objeto fac
     const fac = new Factura(facNro, facFecha, facNombre, facTotal, facAlicuota)
 
     if (facCompraOVenta == 1) {
@@ -134,14 +134,13 @@ const eliminarFactura = () => {
         alert("Factura inexistente");
     }
 
-    // Devolver el array actualizado
+// Devolver el array actualizado
     if (facCompraOVenta == 1) {
         return facturaCompras;
     } else {
         return facturaVentas;
     }
 }
-
 
 
 //Calcular saldo de IVA
@@ -153,8 +152,10 @@ const verSaldoIVA = () => {
 
     if (saldo > 0) {
         alert("El saldo de IVA a pagar es de $" + saldo.toFixed(2));
+        console.log("IVA a pagar $" + saldo.toFixed(2));
     } else {
         alert("El saldo de IVA a favor es de $" + saldo.toFixed(2) * (-1));
+        console.log("IVA a favor $" + saldo.toFixed(2) * (-1));
     }
 }
 
@@ -164,11 +165,11 @@ const buscarFactura = () => {
     let facEncontrada = facturaCompras.find(factura => factura.numero == facNro);
 
     if (facEncontrada) {
-        console.log(`Fecha: ${facEncontrada.fecha} - N°: ${facEncontrada.numero} - Nombre: ${facEncontrada.nombre} - Neto: ${facEncontrada.calcularNeto().toFixed(2)} - IVA: ${facEncontrada.calcularIVA().toFixed(2)} - Total: ${facEncontrada.total}`);
+        console.log(`Fecha: ${facEncontrada.fecha} - N°: ${facEncontrada.numero} - Nombre: ${facEncontrada.nombre} - Neto: ${facEncontrada.calcularNeto().toFixed(2)} - IVA CF: ${facEncontrada.calcularIVA().toFixed(2)} - Total: ${facEncontrada.total}`);
     } else {
         facEncontrada = facturaVentas.find(factura => factura.numero == facNro);
         if (facEncontrada) {
-            console.log(`Fecha: ${facEncontrada.fecha} - N°: ${facEncontrada.numero} - Nombre: ${facEncontrada.nombre} - Neto: ${facEncontrada.calcularNeto().toFixed(2)} - IVA: ${facEncontrada.calcularIVA().toFixed(2)} - Total: ${facEncontrada.total}`);
+            console.log(`Fecha: ${facEncontrada.fecha} - N°: ${facEncontrada.numero} - Nombre: ${facEncontrada.nombre} - Neto: ${facEncontrada.calcularNeto().toFixed(2)} - IVA DF: ${facEncontrada.calcularIVA().toFixed(2)} - Total: ${facEncontrada.total}`);
         }
         else {
             alert("Factura inexistente!")
