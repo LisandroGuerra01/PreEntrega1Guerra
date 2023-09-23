@@ -37,7 +37,7 @@ const cargarFactura = () => {
     let facFecha = prompt("Ingrese la fecha de la factura");
     let facNro = parseInt(prompt("Ingrese el numero de la factura"));
     let facNombre = prompt("Ingrese el nombre del cliente o proveedor");
-    let facTotal = parseFloat(prompt("Ingrese el total de la factura"));
+    let facNeto = parseFloat(prompt("Ingrese el neto de la factura"));
 
     let facAlicuota = 0;
     let opcionAlicuota = 0;
@@ -85,7 +85,7 @@ const ordenarFacVentas = () => {
 const listarFacturasCompras = () => {
     ordenarFacCompras();
     facturaCompras.forEach(factura => {
-        console.log(`Fecha: ${factura.fecha} // N°: ${factura.numero} // Nombre: ${factura.nombre} // Neto: ${factura.calcularNeto().toFixed(2)} // IVA CF: ${factura.calcularIVA().toFixed(2)} // Total: ${factura.total}`);
+        console.log(`Fecha: ${factura.fecha} // N°: ${factura.numero} // Nombre: ${factura.nombre} // Neto: ${factura.neto} // IVA CF: ${factura.calcularIVA().toFixed(2)} // Total: ${factura.calcularTotal().toFixed(2)}`);
     })
 }
 
@@ -93,7 +93,7 @@ const listarFacturasCompras = () => {
 const listarFacturasVentas = () => {
     ordenarFacVentas();
     facturaVentas.map(factura => {
-        console.log(`Fecha: ${factura.fecha} // N°: ${factura.numero} // Nombre: ${factura.nombre} // Neto: ${factura.calcularNeto().toFixed(2)} // IVA DF: ${factura.calcularIVA().toFixed(2)} // Total: ${factura.total}`);
+        console.log(`Fecha: ${factura.fecha} // N°: ${factura.numero} // Nombre: ${factura.nombre} // Neto: ${factura.neto} // IVA DF: ${factura.calcularIVA().toFixed(2)} // Total: ${factura.calcularTotal().toFixed(2)}`);
     })
 }
 
