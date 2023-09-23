@@ -1,5 +1,4 @@
-//MENU PRINCIPAL
-
+//MENU PRINCIPAL 
 alert("Bienvenido al programa de cálculo de IVA");
 
 let opcion = 0;

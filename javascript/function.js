@@ -1,22 +1,23 @@
 //Declaración de clase Factura
 class Factura {
-    constructor(numero, fecha, nombre, total, alicuota) {
+    constructor(numero, fecha, nombre, neto, alicuota) {
         this.numero = numero;
         this.fecha = fecha;
         this.nombre = nombre;
-        this.total = total;
+        this.neto = neto;
         this.alicuota = alicuota;
     }
 
-//Método de cálculo del IVA
-    calcularNeto() {
-        return this.total / (1 + (this.alicuota / 100));
+    //Método de cálculo del total
+    calcularTotal() {
+        return this.neto * (1 + (this.alicuota / 100));
     }
-//Método de cálculo del neto
+    //Método de cálculo del IVA
     calcularIVA() {
-        return this.calcularNeto() * (this.alicuota / 100)
+        return this.neto * (this.alicuota / 100)
     }
 }
+
 
 //Declaración de arrays
 let facturaCompras = [];
@@ -58,7 +59,7 @@ const cargarFactura = () => {
         }
     } while (opcionAlicuota != 1 && opcionAlicuota != 2 && opcionAlicuota != 3);
 
-// Declaración e inicialización con constructor de objeto fac
+    // Declaración e inicialización con constructor de objeto fac
     const fac = new Factura(facNro, facFecha, facNombre, facTotal, facAlicuota)
 
     if (facCompraOVenta == 1) {
@@ -134,7 +135,7 @@ const eliminarFactura = () => {
         alert("Factura inexistente");
     }
 
-// Devolver el array actualizado
+    // Devolver el array actualizado
     if (facCompraOVenta == 1) {
         return facturaCompras;
     } else {
@@ -176,4 +177,3 @@ const buscarFactura = () => {
         }
     }
 }
-
