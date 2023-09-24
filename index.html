@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
-                    <form action="procesar_factura.php" method="post" class="bg-light p-4 rounded shadow">
+                    <form class="bg-light p-4 rounded shadow">
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo de Factura:</label>
                             <select id="tipo" name="tipo" class="form-select" required>
@@ -38,30 +38,30 @@
 
                             <div class="col-md-2">
                                 <label for="validationCustom01" class="form-label">Tipo</label>
-                                <select class="form-select" id="validationCustom04" required>
+                                <select class="form-select" id="tipoFac" required>
                                     <option selected disabled value="">...</option>
-                                    <option>F A</option>
-                                    <option>F B</option>
-                                    <option>F C</option>
-                                    <option>N/C A</option>
-                                    <option>N/C B</option>
-                                    <option>N/C C</option>
-                                    <option>N/D A</option>
-                                    <option>N/D B</option>
-                                    <option>N/D C</option>
+                                    <option value="FA">F A</option>
+                                    <option value="FB">F B</option>
+                                    <option value="FC">F C</option>
+                                    <option value="NC A">N/C A</option>
+                                    <option value="NC B">N/C B</option>
+                                    <option value="NC C">N/C C</option>
+                                    <option value="ND A">N/D A</option>
+                                    <option value="ND B">N/D B</option>
+                                    <option value="NC C">N/D C</option>
                                 </select>
                                 <div class="valid-feedback">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <label for="validationCustom01" class="form-label">Pto Vta</label>
-                                <input type="number" class="form-control" id="validationCustom01" value="Mark" required>
+                                <input type="number" class="form-control" id="ptoVta" required>
                                 <div class="valid-feedback">
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <label for="validationCustom01" class="form-label">Número</label>
-                                <input type="number" class="form-control" id="validationCustom01" value="Mark" required>
+                                <input type="number" class="form-control" id="numFac" required>
                                 <div class="valid-feedback">
                                 </div>
                             </div>
@@ -69,13 +69,13 @@
 
                         <div class="mb-3">
                             <label for="nombre_entidad" class="form-label">Nombre de la Entidad:</label>
-                            <input type="text" id="nombre_entidad" name="nombre_entidad" class="form-control" required>
+                            <input type="text" id="nombreEntidad" name="nombre_entidad" class="form-control" required>
                         </div>
 
 
                         <div class="mb-3">
-                            <label for="precio_total" class="form-label">Precio Total:</label>
-                            <input type="number" id="precio_total" name="precio_total" step="0.01" class="form-control"
+                            <label for="precio_neto" class="form-label">Precio Neto:</label>
+                            <input type="number" id="neto" name="precio_neto" class="form-control"
                                 required>
                         </div>
 
@@ -90,16 +90,16 @@
 
                         <div class="mb-3">
                             <label for="iva" class="form-label">IVA:</label>
-                            <input type="number" id="iva" name="iva" step="0.01" class="form-control" required>
+                            <input type="number" id="iva" name="iva" class="form-control" disabled>
                         </div>
 
                         <div class="mb-3">
-                            <label for="precio_neto" class="form-label">Precio Neto:</label>
-                            <input type="number" id="precio_neto" name="precio_neto" step="0.01" class="form-control"
-                                required>
+                            <label for="precio_total" class="form-label">Precio Total:</label>
+                            <input type="number" id="total" name="precio_total" class="form-control" disabled>
                         </div>
 
                         <button id="btnConfirm" type="submit" class="btn btn-primary">Cargar Factura</button>
+                        <button id="btnClean" type="reset" class="btn btn-primary">Limpiar</button>
                     </form>
                 </div>
 
@@ -132,7 +132,7 @@
 
 
     <script src="./javascript/function.js"></script>
-    <script src="./javascript/main.js"></script>
+    <!-- <script src="./javascript/main.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 

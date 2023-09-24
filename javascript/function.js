@@ -1,8 +1,11 @@
 //Declaración de clase Factura
 class Factura {
-    constructor(numero, fecha, nombre, neto, alicuota) {
-        this.numero = numero;
+    constructor(tipo, fecha, tipoFac, ptoVta, numero, nombre, neto, alicuota) {
+        this.tipo = tipo;
         this.fecha = fecha;
+        this.tipoFac = tipoFac;
+        this.ptoVta = ptoVta;
+        this.numero = numero;
         this.nombre = nombre;
         this.neto = neto;
         this.alicuota = alicuota;
@@ -177,3 +180,43 @@ const buscarFactura = () => {
         }
     }
 }
+
+//Cargar facturas DOM
+const cargarFacturaDom = () => {
+    const tipo = document.getElementById("tipo").value;
+    const fecha = document.getElementById("fecha").value;
+    const tipoFac = document.getElementById("tipoFac").value;
+    const ptoVta = document.getElementById("ptoVta").value;
+    const numFac = document.getElementById("numFac").value;
+    const nombreEntidad = document.getElementById("nombreEntidad").value;
+    const neto = document.getElementById("neto").value;
+    const alicuota = document.getElementById("alicuota").value;
+    const iva = document.getElementById("iva").value;
+    const total = document.getElementById("total").value;
+
+    //Declarar e inicializar con constructor de obj factura para DOM
+    const facDom = new Factura(tipo, fecha, tipoFac, ptoVta, numFac, nombreEntidad, neto, alicuota);
+
+    if (facDom.tipo == "compra") {
+        facturaCompras.push(facDom);
+    } else {
+        facturaVentas.push(facDom);
+    }
+
+    //Calcular IVA y total
+    const totalFac = facDom.calcularTotal();
+    const ivaFac = facDom.calcularIVA();
+
+}
+
+const btnConfirm = document.getElementById("btnConfirm")
+
+btnConfirm.addEventListener("click", (e) => {
+    e.preventDefault();
+    //Cargar Factura
+    cargarFacturaDom();
+
+    console.log(facturaCompras);
+    console.log(facturaVentas);
+
+})
