@@ -23,22 +23,141 @@ class Factura {
     }
 }
 
+
+//Guardar LS
+const guardarLocalStorage = (data, key) => {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+//Recuperar LS
+const recuperarLocalStorage = (key) => {
+    if (localStorage.getItem(key) !=null) {
+        return JSON.parse(localStorage.getItem(key));
+    } else {
+        return [];
+    }
+}
+
 //Declaración de arrays
 let facturaCompras = [];
 let facturaVentas = [];
 
+//Declaración de constantes
+const keyCompras = "facturaCompras";
+const keyVentas = "facturaVentas";
+
 //Carga de facturas de compras y ventas de JS
-if (localStorage.getItem("facturaCompras") != null) {
-    facturaCompras = JSON.parse(localStorage.getItem("facturaCompras"));
+facturaCompras = recuperarLocalStorage(keyCompras);
+facturaVentas = recuperarLocalStorage(keyVentas);
+
+//Cargar facturas DOM
+const cargarFacturaDom = () => {
+    const tipo = document.getElementById("tipo").value;
+    const fecha = document.getElementById("fecha").value;
+    const tipoFac = document.getElementById("tipoFac").value;
+    const ptoVta = document.getElementById("ptoVta").value;
+    const numFac = document.getElementById("numFac").value;
+    const nombreEntidad = document.getElementById("nombreEntidad").value;
+    const neto = document.getElementById("neto").value;
+    const alicuota = document.getElementById("alicuota").value;
+    const iva = neto * (alicuota / 100);
+    const total = neto + iva;
+
+    //Declarar e inicializar con constructor de obj factura para DOM
+    const facDom = new Factura(tipo, fecha, tipoFac, ptoVta, numFac, nombreEntidad, neto, alicuota);
+
+    if (facDom.tipo == "compras") {
+        facturaCompras.push(facDom);
+        guardarLocalStorage(facturaCompras, keyCompras);
+    } else {
+        facturaVentas.push(facDom);
+        guardarLocalStorage(facturaVentas, keyVentas);
+    }
+
 }
-if (localStorage.getItem("facturaVentas") != null) {
-    facturaVentas = JSON.parse(localStorage.getItem("facturaVentas"));
+
+const btnConfirm = document.getElementById("btnConfirm")
+
+btnConfirm.addEventListener("click", (e) => {
+    e.preventDefault();
+    //Cargar Factura
+    cargarFacturaDom();
+
+    //Sweet Alert. Librería JS
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Factura cargada con éxito',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    document.getElementById("formFactura").reset();
+})
+
+
+
+//Listar facturas en DOM
+
+//eliminar factura
+
+const eliminarFacturaDom = (numero) => {
+    let facturaEncontrada = facturaVentas.find(factura => factura.numero == numero);
+    if (facturaEncontrada) {
+        facturaVentas.splice(facturaEncontrada, 1);
+        guardarLocalStorage(facturaVentas, keyVentas);
+        alert("Factura eliminada con éxito");
+    } else {
+        alert("Factura inexistente");
+    }
 }
+
+//Ver facturas
+const verFactura = (data) => {
+    let contenidoHTML = `<table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Tipo Factura</th>
+                                    <th scope="col">Pto. Venta</th>
+                                    <th scope="col">N° Factura</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Neto</th>
+                                    <th scope="col">IVA</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+    data.forEach(factura => {
+        contenidoHTML += `<tr>
+                            <td>${factura.fecha}</td>
+                            <td>${factura.tipo}</td>
+                            <td>${factura.tipoFac}</td>
+                            <td>${factura.ptoVta}</td>
+                            <td>${factura.numero}</td>
+                            <td>${factura.nombre}</td>
+                            <td>${factura.neto}</td>
+                            <td>${factura.iva.toFixed(2)}</td>
+                            <td>${factura.total.toFixed(2)}</td>
+                            <td>
+                                <button class="btn btn-danger" onclick="eliminarFacturaDom(${factura.numero})">Eliminar</button>
+                            </td>
+                        </tr>`
+    })
+
+    contenidoHTML += `</table>`;
+    document.getElementById("ventas").innerHTML = contenidoHTML;
+}
+
+const btnVerVentas = document.getElementById("btnVerVentas")
+
+btnVerVentas.addEventListener("click", (e) => {
+    e.preventDefault();
+    verFactura(facturaVentas);
+})
 
 
 //FUNCIONES
-
-
 
 //Ordenar facturas de compras por fecha
 const ordenarFacCompras = () => {
@@ -147,145 +266,3 @@ const buscarFactura = () => {
     }
 }
 
-//Cargar facturas DOM
-const cargarFacturaDom = () => {
-    const tipo = document.getElementById("tipo").value;
-    const fecha = document.getElementById("fecha").value;
-    const tipoFac = document.getElementById("tipoFac").value;
-    const ptoVta = document.getElementById("ptoVta").value;
-    const numFac = document.getElementById("numFac").value;
-    const nombreEntidad = document.getElementById("nombreEntidad").value;
-    const neto = document.getElementById("neto").value;
-    const alicuota = document.getElementById("alicuota").value;
-    const iva = neto * (alicuota / 100);
-    const total = neto + iva;
-
-    //Declarar e inicializar con constructor de obj factura para DOM
-    const facDom = new Factura(tipo, fecha, tipoFac, ptoVta, numFac, nombreEntidad, neto, alicuota);
-
-    if (facDom.tipo == "compras") {
-        facturaCompras.push(facDom);
-        localStorage.setItem("facturaCompras", JSON.stringify(facturaCompras));
-    } else {
-        facturaVentas.push(facDom);
-        localStorage.setItem("facturaVentas", JSON.stringify(facturaVentas));
-    }
-
-}
-
-const btnConfirm = document.getElementById("btnConfirm")
-
-btnConfirm.addEventListener("click", (e) => {
-    e.preventDefault();
-    //Cargar Factura
-    cargarFacturaDom();
-
-    //Sweet Alert. Librería JS
-    Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Factura cargada con éxito',
-        showConfirmButton: false,
-        timer: 1500
-    })
-    document.getElementById("formFactura").reset();
-})
-
-
-//Ver facturas
-//Listar facturas en DOM
-//COMPRAS
-const listarFacturasComprasDom = () => {
-    let tabla = document.getElementById("tablaCompras");
-    let cuerpoTabla = document.createElement("tbody");
-    tabla.appendChild(cuerpoTabla);
-
-    facturaCompras.forEach((fac) => {
-        let fila = document.createElement("tr");
-        cuerpoTabla.appendChild(fila);
-
-        let fecha = document.createElement("td");
-        fecha.innerText = fac.fecha;
-        fila.appendChild(fecha);
-
-        let tipoFac = document.createElement("td");
-        tipoFac.innerText = fac.tipoFac;
-        fila.appendChild(tipoFac);
-
-        let ptoVta = document.createElement("td");
-        ptoVta.innerText = fac.ptoVta;
-        fila.appendChild(ptoVta);
-
-        let numFac = document.createElement("td");
-        numFac.innerText = fac.numero;
-        fila.appendChild(numFac);
-
-        let nombre = document.createElement("td");
-        nombre.innerText = fac.nombre;
-        fila.appendChild(nombre);
-
-        let neto = document.createElement("td");
-        neto.innerText = fac.neto;
-        fila.appendChild(neto);
-
-        let alicuota = document.createElement("td");
-        alicuota.innerText = fac.alicuota;
-        fila.appendChild(alicuota);
-
-        let iva = document.createElement("td");
-        iva.innerText = fac.iva;
-        fila.appendChild(iva);
-
-        let total = document.createElement("td");
-        total.innerText = fac.total;
-        fila.appendChild(total);
-    })
-}
-
-//VENTAS
-const listarFacturasVentasDom = () => {
-    let tabla = document.getElementById("tablaVentas");
-    let cuerpoTabla = document.createElement("tbody");
-    tabla.appendChild(cuerpoTabla);
-
-    facturaCompras.forEach((fac) => {
-        let fila = document.createElement("tr");
-        cuerpoTabla.appendChild(fila);
-
-        let fecha = document.createElement("td");
-        fecha.innerText = fac.fecha;
-        fila.appendChild(fecha);
-
-        let tipoFac = document.createElement("td");
-        tipoFac.innerText = fac.tipoFac;
-        fila.appendChild(tipoFac);
-
-        let ptoVta = document.createElement("td");
-        ptoVta.innerText = fac.ptoVta;
-        fila.appendChild(ptoVta);
-
-        let numFac = document.createElement("td");
-        numFac.innerText = fac.numero;
-        fila.appendChild(numFac);
-
-        let nombre = document.createElement("td");
-        nombre.innerText = fac.nombre;
-        fila.appendChild(nombre);
-
-        let neto = document.createElement("td");
-        neto.innerText = fac.neto;
-        fila.appendChild(neto);
-
-        let alicuota = document.createElement("td");
-        alicuota.innerText = fac.alicuota;
-        fila.appendChild(alicuota);
-
-        let iva = document.createElement("td");
-        iva.innerText = fac.iva;
-        fila.appendChild(iva);
-
-        let total = document.createElement("td");
-        total.innerText = fac.total;
-        fila.appendChild(total);
-    })
-}
