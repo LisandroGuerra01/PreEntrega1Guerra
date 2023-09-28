@@ -9,6 +9,8 @@ class Factura {
         this.nombre = nombre;
         this.neto = neto;
         this.alicuota = alicuota;
+        this.iva = this.calcularIVA();
+        this.total = this.calcularTotal();
     }
 
     //Método de cálculo del total
@@ -21,58 +23,22 @@ class Factura {
     }
 }
 
-
 //Declaración de arrays
 let facturaCompras = [];
 let facturaVentas = [];
 
+//Carga de facturas de compras y ventas de JS
+if (localStorage.getItem("facturaCompras") != null) {
+    facturaCompras = JSON.parse(localStorage.getItem("facturaCompras"));
+}
+if (localStorage.getItem("facturaVentas") != null) {
+    facturaVentas = JSON.parse(localStorage.getItem("facturaVentas"));
+}
+
+
 //FUNCIONES
 
-//Cargar Factura
-const cargarFactura = () => {
-    let facCompraOVenta = 0;
-    do {
-        facCompraOVenta = parseInt(prompt("Ingrese 1 para Compras \nIngrese 2 para Ventas"));
-        if (facCompraOVenta != 1 && facCompraOVenta != 2) {
-            alert("Opción incorrecta");
-        }
-    } while (facCompraOVenta != 1 && facCompraOVenta != 2);
-    let facFecha = prompt("Ingrese la fecha de la factura");
-    let facNro = parseInt(prompt("Ingrese el numero de la factura"));
-    let facNombre = prompt("Ingrese el nombre del cliente o proveedor");
-    let facNeto = parseFloat(prompt("Ingrese el neto de la factura"));
 
-    let facAlicuota = 0;
-    let opcionAlicuota = 0;
-    do {
-        opcionAlicuota = parseInt(prompt("Ingrese 1 si la alícuota es 10.5% \nIngrese 2 si la alícuota es 21% \nIngrese 3 si la alícuota es 27%"));
-        switch (opcionAlicuota) {
-            case 1:
-                facAlicuota = 10.5;
-                break;
-            case 2:
-                facAlicuota = 21;
-                break;
-            case 3:
-                facAlicuota = 27;
-                break;
-            default:
-                alert("Opción incorrecta");
-                break;
-        }
-    } while (opcionAlicuota != 1 && opcionAlicuota != 2 && opcionAlicuota != 3);
-
-    // Declaración e inicialización con constructor de objeto fac
-    const fac = new Factura(facNro, facFecha, facNombre, facTotal, facAlicuota)
-
-    if (facCompraOVenta == 1) {
-        facturaCompras.push(fac);
-    } else {
-        facturaVentas.push(fac);
-    }
-
-    alert("Factura cargada con exito");
-}
 
 //Ordenar facturas de compras por fecha
 const ordenarFacCompras = () => {
@@ -191,21 +157,19 @@ const cargarFacturaDom = () => {
     const nombreEntidad = document.getElementById("nombreEntidad").value;
     const neto = document.getElementById("neto").value;
     const alicuota = document.getElementById("alicuota").value;
-    const iva = document.getElementById("iva").value;
-    const total = document.getElementById("total").value;
+    const iva = neto * (alicuota / 100);
+    const total = neto + iva;
 
     //Declarar e inicializar con constructor de obj factura para DOM
     const facDom = new Factura(tipo, fecha, tipoFac, ptoVta, numFac, nombreEntidad, neto, alicuota);
 
-    if (facDom.tipo == "compra") {
+    if (facDom.tipo == "compras") {
         facturaCompras.push(facDom);
+        localStorage.setItem("facturaCompras", JSON.stringify(facturaCompras));
     } else {
         facturaVentas.push(facDom);
+        localStorage.setItem("facturaVentas", JSON.stringify(facturaVentas));
     }
-
-    //Calcular IVA y total
-    const totalFac = facDom.calcularTotal();
-    const ivaFac = facDom.calcularIVA();
 
 }
 
@@ -216,7 +180,112 @@ btnConfirm.addEventListener("click", (e) => {
     //Cargar Factura
     cargarFacturaDom();
 
-    console.log(facturaCompras);
-    console.log(facturaVentas);
-
+    //Sweet Alert. Librería JS
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Factura cargada con éxito',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    document.getElementById("formFactura").reset();
 })
+
+
+//Ver facturas
+//Listar facturas en DOM
+//COMPRAS
+const listarFacturasComprasDom = () => {
+    let tabla = document.getElementById("tablaCompras");
+    let cuerpoTabla = document.createElement("tbody");
+    tabla.appendChild(cuerpoTabla);
+
+    facturaCompras.forEach((fac) => {
+        let fila = document.createElement("tr");
+        cuerpoTabla.appendChild(fila);
+
+        let fecha = document.createElement("td");
+        fecha.innerText = fac.fecha;
+        fila.appendChild(fecha);
+
+        let tipoFac = document.createElement("td");
+        tipoFac.innerText = fac.tipoFac;
+        fila.appendChild(tipoFac);
+
+        let ptoVta = document.createElement("td");
+        ptoVta.innerText = fac.ptoVta;
+        fila.appendChild(ptoVta);
+
+        let numFac = document.createElement("td");
+        numFac.innerText = fac.numero;
+        fila.appendChild(numFac);
+
+        let nombre = document.createElement("td");
+        nombre.innerText = fac.nombre;
+        fila.appendChild(nombre);
+
+        let neto = document.createElement("td");
+        neto.innerText = fac.neto;
+        fila.appendChild(neto);
+
+        let alicuota = document.createElement("td");
+        alicuota.innerText = fac.alicuota;
+        fila.appendChild(alicuota);
+
+        let iva = document.createElement("td");
+        iva.innerText = fac.iva;
+        fila.appendChild(iva);
+
+        let total = document.createElement("td");
+        total.innerText = fac.total;
+        fila.appendChild(total);
+    })
+}
+
+//VENTAS
+const listarFacturasVentasDom = () => {
+    let tabla = document.getElementById("tablaVentas");
+    let cuerpoTabla = document.createElement("tbody");
+    tabla.appendChild(cuerpoTabla);
+
+    facturaCompras.forEach((fac) => {
+        let fila = document.createElement("tr");
+        cuerpoTabla.appendChild(fila);
+
+        let fecha = document.createElement("td");
+        fecha.innerText = fac.fecha;
+        fila.appendChild(fecha);
+
+        let tipoFac = document.createElement("td");
+        tipoFac.innerText = fac.tipoFac;
+        fila.appendChild(tipoFac);
+
+        let ptoVta = document.createElement("td");
+        ptoVta.innerText = fac.ptoVta;
+        fila.appendChild(ptoVta);
+
+        let numFac = document.createElement("td");
+        numFac.innerText = fac.numero;
+        fila.appendChild(numFac);
+
+        let nombre = document.createElement("td");
+        nombre.innerText = fac.nombre;
+        fila.appendChild(nombre);
+
+        let neto = document.createElement("td");
+        neto.innerText = fac.neto;
+        fila.appendChild(neto);
+
+        let alicuota = document.createElement("td");
+        alicuota.innerText = fac.alicuota;
+        fila.appendChild(alicuota);
+
+        let iva = document.createElement("td");
+        iva.innerText = fac.iva;
+        fila.appendChild(iva);
+
+        let total = document.createElement("td");
+        total.innerText = fac.total;
+        fila.appendChild(total);
+    })
+}

@@ -17,8 +17,8 @@
     <main class="py-4">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <form class="bg-light p-4 rounded shadow">
+                <div class="col">
+                    <form id="formFactura" class="bg-light p-4 rounded shadow">
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo de Factura:</label>
                             <select id="tipo" name="tipo" class="form-select" required>
@@ -75,8 +75,7 @@
 
                         <div class="mb-3">
                             <label for="precio_neto" class="form-label">Precio Neto:</label>
-                            <input type="number" id="neto" name="precio_neto" class="form-control"
-                                required>
+                            <input type="number" id="neto" name="precio_neto" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
@@ -102,26 +101,13 @@
                         <button id="btnClean" type="reset" class="btn btn-primary">Limpiar</button>
                     </form>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Facturas Cargadas
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <div class="factura">
-                                <strong>Tipo:</strong> Compra<br>
-                                <strong>Fecha:</strong> 2023-09-20<br>
-                                <strong>Número de Factura:</strong> 12345<br>
-                                <strong>Proveedor:</strong> ACME Inc.<br>
-                                <strong>Precio Total:</strong> $1000<br>
-                                <strong>IVA:</strong> $210<br>
-                                <strong>Precio Neto:</strong> $790<br>
-                                <strong>Alícuota:</strong> 21%<br>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col d-grid gap-2 mb-auto col-2">
+                    <a href="/ventas.html" class="text-decoration-none btn btn-success">
+                        Ventas
+                    </a>
+                    <a href="/compras.html" class="text-decoration-none btn btn-danger">
+                        Compras
+                    </a>
                 </div>
             </div>
         </div>
