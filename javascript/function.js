@@ -98,7 +98,6 @@ btnConfirm.addEventListener("click", (e) => {
 //Listar facturas en DOM
 
 //eliminar factura
-
 const eliminarFacturaDom = (numero) => {
     let facturaEncontrada = facturaVentas.find(factura => factura.numero == numero);
     if (facturaEncontrada) {
@@ -146,14 +145,23 @@ const verFactura = (data) => {
     })
 
     contenidoHTML += `</table>`;
-    document.getElementById("ventas").innerHTML = contenidoHTML;
+    document.getElementById("tablaFacturas").innerHTML = contenidoHTML;
 }
 
-const btnVerVentas = document.getElementById("btnVerVentas")
+// Ver ventas
+const btnVerVentas = document.getElementById("btnVerVentas");
 
 btnVerVentas.addEventListener("click", (e) => {
     e.preventDefault();
     verFactura(facturaVentas);
+})
+
+//Ver compras
+const btnVerComprass = document.getElementById("btnVerCompras");
+
+btnVerCompras.addEventListener("click", (e) => {
+    e.preventDefault();
+    verFactura(facturaCompras);
 })
 
 
@@ -183,52 +191,6 @@ const listarFacturasVentas = () => {
     facturaVentas.map(factura => {
         console.log(`Fecha: ${factura.fecha} // N°: ${factura.numero} // Nombre: ${factura.nombre} // Neto: ${factura.neto} // IVA DF: ${factura.calcularIVA().toFixed(2)} // Total: ${factura.calcularTotal().toFixed(2)}`);
     })
-}
-
-
-//Eliminar factura
-const eliminarFactura = () => {
-    let facCompraOVenta = 0;
-    do {
-        facCompraOVenta = parseInt(prompt("Ingrese 1 para Compras \nIngrese 2 para Ventas"));
-        if (facCompraOVenta != 1 && facCompraOVenta != 2) {
-            alert("Opción incorrecta");
-        }
-    } while (facCompraOVenta != 1 && facCompraOVenta != 2);
-
-    let facturaAEliminar = prompt("Ingrese el número de factura que desea eliminar:");
-    let facturaEncontrada = false;
-
-    if (facCompraOVenta == 1) {
-        for (let i = 0; i < facturaCompras.length; i++) {
-            if (facturaCompras[i].numero === parseInt(facturaAEliminar)) {
-                facturaCompras.splice(i, 1);
-                facturaEncontrada = true;
-                alert("Factura eliminada con éxito");
-                break;
-            }
-        }
-    } else {
-        for (let i = 0; i < facturaVentas.length; i++) {
-            if (facturaVentas[i].numero === parseInt(facturaAEliminar)) {
-                facturaVentas.splice(i, 1);
-                facturaEncontrada = true;
-                alert("Factura eliminada con éxito");
-                break;
-            }
-        }
-    }
-
-    if (!facturaEncontrada) {
-        alert("Factura inexistente");
-    }
-
-    // Devolver el array actualizado
-    if (facCompraOVenta == 1) {
-        return facturaCompras;
-    } else {
-        return facturaVentas;
-    }
 }
 
 

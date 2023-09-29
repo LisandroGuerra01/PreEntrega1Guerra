@@ -77,7 +77,7 @@
     <main class="py-4 mt-5">
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-6">
                     <form id="formFactura" class="bg-light p-4 rounded shadow">
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo de Factura:</label>
@@ -161,17 +161,21 @@
                         <button id="btnClean" type="reset" class="btn btn-primary">Limpiar</button>
                     </form>
                 </div>
-                <div class="col d-grid gap-2 mb-auto col-4">
+                <div class="col-6 d-grid gap-2 mb-auto">
                     <button class="text-decoration-none btn btn-success" id="btnVerVentas">
                         Ventas
                     </button>
-                    <a href="/compras.html" class="text-decoration-none btn btn-danger">
+                    <button class="text-decoration-none btn btn-danger" id="btnVerCompras">
                         Compras
-                    </a>
-                    <div id="ventas">
+                    </button>
+                    <div id="tablaFacturas">
 
                     </div>
-                              
+                    <div class="col d-grid">
+                        <button class="text-decoration-none btn btn-primary" id="saldoIVA">
+                            Saldo IVA
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
