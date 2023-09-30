@@ -54,92 +54,7 @@ footer .footer-pagos a:hover {
     transform: scale(1.5);
 }
 
-/* servicios */
-main {
-    background: rgba(211, 213, 213, 0.5058823529);
-    /* Asesorate */
-    /* Haceme tu consulta */
-}
 
-main .main-servicios .globo {
-    border: 2px solid rgba(221, 221, 221, 0.658);
-    border-radius: 8px;
-    box-shadow: 2px 2px 5px;
-    transition: transform 0.5s;
-    background-color: rgba(209, 211, 220, 0.5568627451);
-    height: 32rem;
-}
-
-main .main-servicios .globo img {
-    width: 20rem;
-    border-radius: 8px;
-    box-shadow: 2px 2px 5px;
-}
-
-main .main-servicios .globo p {
-    text-align: justify;
-}
-
-main .main-servicios .globo:hover {
-    transform: scale(1.03);
-    box-shadow: 5px 5px 10px;
-}
-
-main .main-servicios .globo:hover img {
-    border-radius: 8px;
-    box-shadow: 3px 5px 10px;
-}
-
-main .carousel-item {
-    height: 32rem;
-    background-color: rgba(209, 211, 220, 0.5568627451);
-}
-
-main .carousel-item p {
-    text-align: justify;
-    padding: 0 1rem;
-}
-
-main .carousel-item .card-footer {
-    bottom: 1%;
-    left: 37%;
-}
-
-main .asesorate {
-    padding: 140px 200px;
-    color: #fcfcfc;
-    background-image: url(../images/baner5.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    text-shadow: 2px 1px 3px rgb(0, 0, 0);
-    /* padding: 140px 200px; */
-    padding: 8% 10%;
-}
-
-main .asesorate h3 {
-    padding-bottom: 15px;
-    font-size: 30px;
-    font-style: oblique;
-}
-
-main .asesorate a {
-    color: #fcfcfc;
-    text-decoration: none;
-}
-
-main .main-consulta .form-main {
-    border: 0.1rem solid rgba(141, 141, 141, 0.342);
-    background-color: rgba(209, 211, 220, 0.5568627451);
-    border-radius: 8px;
-    box-shadow: 5px 5px 10px;
-}
-
-main .main-consulta input {
-    border-radius: 3px;
-    width: 50%;
-    height: 1.6rem;
-}
 
 /* MEDIA QUERIES */
 @media (max-width: 767.98px) {
@@ -151,10 +66,6 @@ main .main-consulta input {
         top: 17%;
         left: 0%;
         font-size: 2.5rem;
-    }
-
-    main {
-        padding: 0;
     }
 
     .footer-contact {
@@ -171,9 +82,5 @@ main .main-consulta input {
 @media (max-width: 968px) {
     .header-azul-contacto {
         display: none;
-    }
-
-    .boton-hamburguesa {
-        display: block;
     }
 }
