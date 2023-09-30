@@ -241,6 +241,16 @@ const cargarFacturaDom = () => {
     const neto = document.getElementById("neto").value;
     const alicuota = document.getElementById("alicuota").value;
 
+    //validar campos requeridos
+    if (tipo == "" || fecha == "" || tipoFac == "" || ptoVta == "" || numFac == "" || nombreEntidad == "" || neto == "" || alicuota == "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Debe completar todos los campos',
+        })
+        return false;
+    }
+
     //Declarar e inicializar con constructor de obj factura para DOM
     const facDom = new Factura(tipo, fecha, tipoFac, ptoVta, numFac, nombreEntidad, neto, alicuota);
 
@@ -259,7 +269,7 @@ const cargarFacturaDom = () => {
         guardarLocalStorage(facturaVentas, keyVentas);
         verFactura(facturaVentas);
     }
-
+    return true;
 }
 
 const btnConfirm = document.getElementById("btnConfirm")
@@ -267,9 +277,11 @@ const btnConfirm = document.getElementById("btnConfirm")
 btnConfirm.addEventListener("click", (e) => {
     e.preventDefault();
     //Cargar Factura
-    cargarFacturaDom();
+    if (!cargarFacturaDom()) {
+        return;
+    }
 
-    //Sweet Alert
+    //Sweet Alert. Librería JS
     Swal.fire({
         position: 'top-end',
         icon: 'success',
