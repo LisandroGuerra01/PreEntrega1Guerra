@@ -219,7 +219,7 @@ const verSaldoIVA = () => {
     } else if (saldoIVA < 0) {
         Swal.fire('El saldo de IVA a favor es de $' + saldoIVA.toFixed(2) * -1);
     } else {
-        Swal.fire('El saldo de IVA es de' + saldoIVA.toFixed(2));
+        Swal.fire('El saldo de IVA es de ' + saldoIVA.toFixed(2));
     }
 }
 
