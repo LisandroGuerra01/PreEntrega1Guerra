@@ -23,19 +23,11 @@ class Factura {
     }
 }
 
-
 //Guardar LS
-const guardarLocalStorage = (data, key) => {
-    localStorage.setItem(key, JSON.stringify(data));
-}
+const guardarLocalStorage = (data, key) => localStorage.setItem(key, JSON.stringify(data));
 //Recuperar LS
-const recuperarLocalStorage = (key) => {
-    if (localStorage.getItem(key) != null) {
-        return JSON.parse(localStorage.getItem(key));
-    } else {
-        return [];
-    }
-}
+const recuperarLocalStorage = (key) => JSON.parse(localStorage.getItem(key)) || [];
+
 
 //Declaración de arrays
 let facturaCompras = [];
@@ -149,7 +141,7 @@ const verFactura = (data) => {
         return;
     }
     ordenarFac(data);
-    let contenidoHTML = `<h3>Listado de Facturas de ${data[0].tipo}</h3><table class="table table-striped table-hover">
+    let contenidoHTML = `<h3 style="color: ${data[0].tipo === 'ventas' ? 'green' : 'red'}">Listado de Facturas de ${data[0].tipo}</h3><table class="${data[0].tipo === 'ventas' ? 'table table-success table-hover' : 'table table-danger table-hover'}">
                             <thead>
                                 <tr>
                                     <th scope="col">Fecha</th>
@@ -161,7 +153,7 @@ const verFactura = (data) => {
                                     <th scope="col">Neto</th>
                                     <th scope="col">IVA</th>
                                     <th scope="col">Total</th>
-                                    <th scope="col">Acciones</th>
+                                    <th scope="col"><input type="text" id="filtro" class="form-control" placeholder="Buscar"></th>
                                 </tr>
                             </thead>
                             <tbody>`;
@@ -177,17 +169,42 @@ const verFactura = (data) => {
                             <td>${factura.iva.toFixed(2)}</td>
                             <td>${factura.total.toFixed(2)}</td>
                             <td>
-                                <button class="btn btn-danger" onclick="eliminarFacturaDom(
+                                <button class="btn" onclick="eliminarFacturaDom(
                                     ${factura.numero}, '${factura.tipo}'
                                 )">
                                 <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>
                         </tr>`
-    })
+    });
 
     contenidoHTML += `</table>`;
     document.getElementById("tablaFacturas").innerHTML = contenidoHTML;
+
+    //Evento para cuadro de búsqueda
+    document.getElementById('filtro').addEventListener('input', function() {
+        const filtro = this.value.toLowerCase();
+        const filas = document.querySelectorAll('tbody tr');
+
+        filas.forEach(function(fila) {
+            let coincide = false;
+
+        fila.querySelectorAll('td').forEach(function(celda) {
+            if (celda.textContent.toLowerCase() === filtro) {
+                coincide = true;
+            }
+        });
+
+            fila.style.display = coincide ? '' : 'none';
+        });
+
+        // Si el filtro está vacío, mostrar todas las filas
+        if (!filtro) {
+            filas.forEach(function(fila) {
+                fila.style.display = '';
+            });
+        }
+    });
 }
 
 //Ver ventas
@@ -196,7 +213,7 @@ const btnVerVentas = document.getElementById("btnVerVentas");
 btnVerVentas.addEventListener("click", (e) => {
     e.preventDefault();
     verFactura(facturaVentas);
-})
+});
 
 //Ver compras
 const btnVerComprass = document.getElementById("btnVerCompras");
@@ -204,23 +221,21 @@ const btnVerComprass = document.getElementById("btnVerCompras");
 btnVerCompras.addEventListener("click", (e) => {
     e.preventDefault();
     verFactura(facturaCompras);
-})
+});
 
 
 //Ver saldo
 const verSaldoIVA = () => {
-
     let IvaCF = facturaCompras.reduce((acum, fac) => acum + fac.iva, 0);
     let IvaDF = facturaVentas.reduce((acum, fac) => acum + fac.iva, 0);
     let saldoIVA = IvaDF - IvaCF;
 
-    if (saldoIVA > 0) {
-        Swal.fire('El saldo de IVA a pagar es de $' + saldoIVA.toFixed(2));
-    } else if (saldoIVA < 0) {
-        Swal.fire('El saldo de IVA a favor es de $' + saldoIVA.toFixed(2) * -1);
-    } else {
-        Swal.fire('El saldo de IVA es de ' + saldoIVA.toFixed(2));
-    }
+    let mensaje =
+        saldoIVA > 0 ? `El saldo de IVA a pagar es de $${saldoIVA.toFixed(2)}` :
+        saldoIVA < 0 ? `El saldo de IVA a favor es de $${(saldoIVA * -1).toFixed(2)}` :
+        `El saldo de IVA es de ${saldoIVA.toFixed(2)}`;
+
+    Swal.fire(mensaje);
 }
 
 const btnSaldoIVA = document.getElementById("btnSaldoIVA");
@@ -256,9 +271,7 @@ const cargarFacturaDom = () => {
 
     if (tipoFac !== "FA" && tipoFac !== "FB" && tipoFac !== "FC" && tipoFac !== "NDA" && tipoFac !== "NDB" && tipoFac !== "NDC") {
         facDom.iva = facDom.iva * (-1);
-        console.log(facDom);
     }
-
 
     if (facDom.tipo == "compras") {
         facturaCompras.push(facDom);
