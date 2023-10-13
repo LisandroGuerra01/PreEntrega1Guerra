@@ -208,34 +208,28 @@ const verFactura = (data) => {
 }
 
 
-function mostrarFormulario() {
-    let btnCargar = document.getElementById("formCarga");
-    btnCargar.className = "d-block"
-}
-const btnCargar = document.getElementById("btnCargar");
-btnCargar.addEventListener("click", (e) => {
-    e.preventDefault();
-    mostrarFormulario();
-})
-
+//Abrir y cerrar formulario
+document.getElementById("btnCargar").addEventListener("click", function() {
+    let formulario = document.getElementById("formCarga");
+    formulario.classList.toggle("d-none");
+    formulario.classList.toggle("d-block");
+});
 
 //Ver ventas
-const btnVerVentas = document.getElementById("btnVerVentas");
+const btnVentas = document.getElementById("btnVentas");
 
-btnVerVentas.addEventListener("click", (e) => {
+btnVentas.addEventListener("click", (e) => {
     e.preventDefault();
     verFactura(facturaVentas);
 });
 
 //Ver compras
-const btnVerComprass = document.getElementById("btnVerCompras");
+const btnComprass = document.getElementById("btnCompras");
 
-btnVerCompras.addEventListener("click", (e) => {
+btnCompras.addEventListener("click", (e) => {
     e.preventDefault();
     verFactura(facturaCompras);
 
-/*  const tablaFacturas = document.getElementById("tablaFacturas");
-    tablaFacturas.style.display = "none"; */
 });
 
 

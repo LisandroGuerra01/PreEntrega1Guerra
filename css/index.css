@@ -39,9 +39,9 @@ header nav.barra div.collapse .btn-group:hover {
 }
 
 /*OCULTAR EL CONTENIDO AL INICIAR*/
-#formCarga {
+/* #formCarga {
     display: none;
-}
+} */
 
 /*FOOTER*/
 footer a {
