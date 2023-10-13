@@ -141,7 +141,7 @@ const verFactura = (data) => {
         return;
     }
     ordenarFac(data);
-    let contenidoHTML = `<h3 style="color: ${data[0].tipo === 'ventas' ? 'green' : 'red'}">Listado de Facturas de ${data[0].tipo}</h3><table class="${data[0].tipo === 'ventas' ? 'table table-success table-hover' : 'table table-danger table-hover'}">
+    let contenidoHTML = `<h3 style="color: ${data[0].tipo === 'ventas' ? 'green' : 'red'}">Listado de Facturas de ${data[0].tipo}</h3><table id="tablaFacturas" class="${data[0].tipo === 'ventas' ? 'table table-success table-hover' : 'table table-danger table-hover'}">
                             <thead>
                                 <tr>
                                     <th scope="col">Fecha</th>
@@ -207,6 +207,18 @@ const verFactura = (data) => {
     });
 }
 
+
+function mostrarFormulario() {
+    let btnCargar = document.getElementById("formCarga");
+    btnCargar.className = "d-block"
+}
+const btnCargar = document.getElementById("btnCargar");
+btnCargar.addEventListener("click", (e) => {
+    e.preventDefault();
+    mostrarFormulario();
+})
+
+
 //Ver ventas
 const btnVerVentas = document.getElementById("btnVerVentas");
 
@@ -221,6 +233,9 @@ const btnVerComprass = document.getElementById("btnVerCompras");
 btnVerCompras.addEventListener("click", (e) => {
     e.preventDefault();
     verFactura(facturaCompras);
+
+/*  const tablaFacturas = document.getElementById("tablaFacturas");
+    tablaFacturas.style.display = "none"; */
 });
 
 

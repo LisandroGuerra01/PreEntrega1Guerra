@@ -76,8 +76,13 @@
     </header>
     <main class="py-4 mt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-8">
+            <div class="row justify-content-center">
+                <div class="col-8 d-grid gap-2 mb-auto">
+                    <button class="text-decoration-none btn btn-primary" id="btnCargar">
+                        Cargar
+                    </button>
+                </div>
+                <div class="col-12 p-3" id="formCarga">
                     <form id="formFactura" class="bg-light p-4 rounded shadow">
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo de Factura:</label>
@@ -139,7 +144,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="alicuota" class="form-label">Alícuota:</label>
+                            <label id="" for="alicuota" class="form-label">Alícuota:</label>
                             <select id="alicuota" name="alicuota" class="form-select" required>
                                 <option value="10.5">10.5%</option>
                                 <option value="21">21%</option>
@@ -161,7 +166,9 @@
                         <button id="btnClean" type="reset" class="btn btn-primary">Limpiar</button>
                     </form>
                 </div>
-                <div class="col-4 d-grid gap-2 mb-auto">
+                
+                <!-- BOTONES -->
+                <div class="col-8 d-grid gap-2 mb-auto" id="botones">
                     <button class="text-decoration-none btn btn-success" id="btnVerVentas">
                         Ventas
                     </button>
@@ -169,13 +176,10 @@
                         Compras
                     </button>
                     <div id="tablaFacturas">
-
                     </div>
-                    <div class="col d-grid">
-                        <button class="text-decoration-none btn btn-primary" id="btnSaldoIVA">
-                            Saldo IVA
-                        </button>
-                    </div>
+                    <button class="text-decoration-none btn btn-warning" id="btnSaldoIVA">
+                        Saldo IVA
+                    </button>
                 </div>
             </div>
         </div>
@@ -275,6 +279,7 @@
 
     <script src="./javascript/function.js"></script>
     <!-- <script src="./javascript/main.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JS DE BOOTSTRAP -->
     <script src=" https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
