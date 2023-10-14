@@ -78,11 +78,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-8 d-grid mb-2">
-                    <button class="text-decoration-none btn btn-primary" id="btnCargar">
+                    <button id="cagarFac" class="text-decoration-none btn btn-primary" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#prueba1" aria-expanded="false"
+                        aria-controls="prueba1">
                         Cargar
                     </button>
                 </div>
-                <div class="col-8 p-3 d-none" id="formCarga">
+                <div class="col-8 p-3 collapse" id="prueba1">
                     <form id="formFactura" class="bg-light p-4 rounded shadow">
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo de Factura:</label>
@@ -166,22 +168,32 @@
                         <button id="btnClean" type="reset" class="btn btn-primary">Limpiar</button>
                     </form>
                 </div>
-                
+
                 <!-- BOTONES -->
                 <div class="col-8 d-grid gap-2 mb-auto" id="botones">
-                    <button class="text-decoration-none btn btn-success" id="btnVentas">
+                    <button class="text-decoration-none btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#prueba3" aria-expanded="false" aria-controls="prueba3" id="btnVentas">
                         Ventas
                     </button>
-                    <button class="text-decoration-none btn btn-danger" id="btnCompras">
+                    <div class="p-2 collapse" id="prueba3">
+                        <div id="tablaFacturasventas">
+                        </div>
+                    </div>
+                    <button class="text-decoration-none btn btn-danger" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#prueba2" aria-expanded="false" aria-controls="prueba2" id="btnCompras">
                         Compras
                     </button>
-                    <div id="tablaFacturas">
+                    <div class="p-2 collapse" id="prueba2">
+                        <div id="tablaFacturascompras">
+                        </div>
                     </div>
                     <button class="text-decoration-none btn btn-warning" id="btnSaldoIVA">
                         Saldo IVA
                     </button>
                 </div>
+
             </div>
+        </div>
         </div>
     </main>
     <!-- FOOTER -->

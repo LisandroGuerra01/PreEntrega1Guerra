@@ -63,6 +63,97 @@ alicuotaDom.addEventListener("keyup", calcularIvaTotal);
 
 //Listar facturas en DOM
 
+//Ordenar facturas por fecha de mayor a menor
+const ordenarFac = (data) => {
+    data.sort((b, a) => new Date(b.fecha) - new Date(a.fecha));
+    return data;
+}
+
+//Ver facturas
+const verFactura = (data) => {
+    if (data.length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No hay facturas cargadas',
+        })
+        return;
+    } else {
+        ordenarFac(data);
+        let contenidoHTML = `<h3 style="color: ${data[0].tipo === 'ventas' ? 'green' : 'red'}">Listado de Facturas de ${data[0].tipo}</h3><table class="${data[0].tipo === 'ventas' ? 'table table-success table-hover' : 'table table-danger table-hover'}">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Tipo Factura</th>
+                                        <th scope="col">Pto. Venta</th>
+                                        <th scope="col">N° Factura</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Neto</th>
+                                        <th scope="col">IVA</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">
+                                        <form id="filtro${data[0].tipo}" class="d-flex" role="search">
+                                        <input class="form-control me-2" type="search" aria-label="Search"/>
+                                        <button class="${data[0].tipo === 'ventas' ? 'btn btn-success' : 'btn btn-danger'}" type="submit">
+                                        <i class="fas fa-search"></i>
+                                        </button>
+                                        </form>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+        data.forEach(factura => {
+            contenidoHTML += `<tr>
+                                <td>${factura.fecha}</td>
+                                <td>${factura.tipo}</td>
+                                <td>${factura.tipoFac}</td>
+                                <td>${factura.ptoVta}</td>
+                                <td>${factura.numero}</td>
+                                <td>${factura.nombre}</td>
+                                <td>${factura.neto}</td>
+                                <td>${factura.iva.toFixed(2)}</td>
+                                <td>${factura.total.toFixed(2)}</td>
+                                <td>
+                                    <button class="btn" onclick="eliminarFacturaDom(
+                                        ${factura.numero}, '${factura.tipo}'
+                                    )">
+                                    <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>`
+        });
+
+        contenidoHTML += `</table >`;
+        document.getElementById("tablaFacturas" + data[0].tipo).innerHTML = contenidoHTML;
+
+        //Evento para cuadro de búsqueda
+        document.getElementById(`filtro${data[0].tipo}`).addEventListener('submit', (e) => {
+            e.preventDefault();
+            const filtro = document.querySelector(`#filtro${ data[0].tipo} input`).value.toLowerCase();
+            const filas = document.querySelectorAll('tbody tr');
+
+            filas.forEach((fila) => {
+                let coincide = false;
+
+                fila.querySelectorAll('td').forEach((celda) => {
+                    if (celda.textContent.toLowerCase() === filtro) {
+                        coincide = true;
+                    }
+                });
+                fila.style.display = coincide ? '' : 'none';
+            });
+            // Si el filtro está vacío, mostrar todas las filas
+            if (!filtro) {
+                filas.forEach((fila) => {
+                    fila.style.display = '';
+                });
+            }
+            filtro.value = '';
+        });
+    }
+}
+
 //eliminar factura
 const eliminarFacturaDom = (numero, tipoFac) => {
     if (tipoFac == "compras") {
@@ -87,7 +178,7 @@ const eliminarFacturaDom = (numero, tipoFac) => {
                 facturaCompras = facturaComprasEliminar;
                 guardarLocalStorage(facturaCompras, keyCompras);
                 if (facturaCompras.length == 0) {
-                    document.getElementById("tablaFacturas").innerHTML = "";
+                    document.getElementById("tablaFacturas" + tipoFac).innerHTML = "";
                 } else {
                     verFactura(facturaCompras);
                 }
@@ -115,7 +206,7 @@ const eliminarFacturaDom = (numero, tipoFac) => {
                 facturaVentas = facturaVentasEliminar;
                 guardarLocalStorage(facturaVentas, keyVentas);
                 if (facturaVentas.length == 0) {
-                    document.getElementById("tablaFacturas").innerHTML = "";
+                    document.getElementById("tablaFacturas" + tipoFac).innerHTML = "";
                 } else {
                     verFactura(facturaVentas);
                 }
@@ -124,112 +215,35 @@ const eliminarFacturaDom = (numero, tipoFac) => {
     }
 }
 
-//Ordenar facturas por fecha de mayor a menor
-const ordenarFac = (data) => {
-    data.sort((b, a) => new Date(b.fecha) - new Date(a.fecha));
-    return data;
-}
 
-//Ver facturas
-const verFactura = (data) => {
-    if (data.length == 0) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'No hay facturas cargadas',
-        })
-        return;
-    }
-    ordenarFac(data);
-    let contenidoHTML = `<h3 style="color: ${data[0].tipo === 'ventas' ? 'green' : 'red'}">Listado de Facturas de ${data[0].tipo}</h3><table id="tablaFacturas" class="${data[0].tipo === 'ventas' ? 'table table-success table-hover' : 'table table-danger table-hover'}">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Fecha</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Tipo Factura</th>
-                                    <th scope="col">Pto. Venta</th>
-                                    <th scope="col">N° Factura</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Neto</th>
-                                    <th scope="col">IVA</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col"><input type="text" id="filtro" class="form-control" placeholder="Buscar"></th>
-                                </tr>
-                            </thead>
-                            <tbody>`;
-    data.forEach(factura => {
-        contenidoHTML += `<tr>
-                            <td>${factura.fecha}</td>
-                            <td>${factura.tipo}</td>
-                            <td>${factura.tipoFac}</td>
-                            <td>${factura.ptoVta}</td>
-                            <td>${factura.numero}</td>
-                            <td>${factura.nombre}</td>
-                            <td>${factura.neto}</td>
-                            <td>${factura.iva.toFixed(2)}</td>
-                            <td>${factura.total.toFixed(2)}</td>
-                            <td>
-                                <button class="btn" onclick="eliminarFacturaDom(
-                                    ${factura.numero}, '${factura.tipo}'
-                                )">
-                                <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>`
-    });
+//Ver Alta de Facturas
+const btnCagarFac = document.getElementById("cagarFac");
 
-    contenidoHTML += `</table>`;
-    document.getElementById("tablaFacturas").innerHTML = contenidoHTML;
-
-    //Evento para cuadro de búsqueda
-    document.getElementById('filtro').addEventListener('input', function() {
-        const filtro = this.value.toLowerCase();
-        const filas = document.querySelectorAll('tbody tr');
-
-        filas.forEach(function(fila) {
-            let coincide = false;
-
-        fila.querySelectorAll('td').forEach(function(celda) {
-            if (celda.textContent.toLowerCase() === filtro) {
-                coincide = true;
-            }
-        });
-
-            fila.style.display = coincide ? '' : 'none';
-        });
-
-        // Si el filtro está vacío, mostrar todas las filas
-        if (!filtro) {
-            filas.forEach(function(fila) {
-                fila.style.display = '';
-            });
-        }
-    });
-}
-
-
-//Abrir y cerrar formulario
-document.getElementById("btnCargar").addEventListener("click", function() {
-    let formulario = document.getElementById("formCarga");
-    formulario.classList.toggle("d-none");
-    formulario.classList.toggle("d-block");
-});
+btnCagarFac.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("prueba2").classList.remove("show");
+    document.getElementById("prueba3").classList.remove("show");
+})
 
 //Ver ventas
 const btnVentas = document.getElementById("btnVentas");
 
 btnVentas.addEventListener("click", (e) => {
     e.preventDefault();
+    //collapse compras
+    document.getElementById("prueba1").classList.remove("show");
+    document.getElementById("prueba2").classList.remove("show");
     verFactura(facturaVentas);
 });
 
 //Ver compras
-const btnComprass = document.getElementById("btnCompras");
+const btnCompras = document.getElementById("btnCompras");
 
 btnCompras.addEventListener("click", (e) => {
     e.preventDefault();
+    document.getElementById("prueba1").classList.remove("show");
+    document.getElementById("prueba3").classList.remove("show");
     verFactura(facturaCompras);
-
 });
 
 
@@ -241,8 +255,8 @@ const verSaldoIVA = () => {
 
     let mensaje =
         saldoIVA > 0 ? `El saldo de IVA a pagar es de $${saldoIVA.toFixed(2)}` :
-        saldoIVA < 0 ? `El saldo de IVA a favor es de $${(saldoIVA * -1).toFixed(2)}` :
-        `El saldo de IVA es de ${saldoIVA.toFixed(2)}`;
+            saldoIVA < 0 ? `El saldo de IVA a favor es de $${(saldoIVA * -1).toFixed(2)}` :
+                `El saldo de IVA es de ${saldoIVA.toFixed(2)}`;
 
     Swal.fire(mensaje);
 }
