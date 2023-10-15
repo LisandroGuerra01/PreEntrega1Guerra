@@ -44,17 +44,39 @@ header nav.barra div.collapse .btn-group:hover {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
 }
+
 main {
     background: linear-gradient(to right, #0c356a3a, #d5ffd048);
     background-size: 200% 100%;
     animation: colorChange 4s infinite alternate;
 }
 
+/* API */
+@keyframes slide {
+    0% {
+        transform: translateX(100);
+    }
 
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.zocalo {
+    height: 33px;
+}
+
+.api {
+    width: max-content;
+    height: 80%;
+    white-space: nowrap;
+    animation: slide 50s linear infinite;
+}
 
 /*FOOTER*/
 footer a {
