@@ -32,7 +32,7 @@ const showData = async () => {
     }
 
     dataCotizaciones.forEach(element => {
-        dataApi.innerHTML += <span>${element.Symbol} - ${element.Price} | </span>;
+        dataApi.innerHTML += `<span>${element.Symbol} - ${element.Price} | </span>`;
     });
 }
 
