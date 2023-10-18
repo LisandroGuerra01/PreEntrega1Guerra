@@ -23,17 +23,17 @@ const dataApi = document.getElementById('dataApi');
 
 const showData = async () => {
     const data = await getPrices();
-    console.log(data);
-
+console.log(data);
     //Array de cotizaciones a mostrar
-    let dataCotizaciones = [0, 2, 4, 5, 18, 20, 27, 50, 67, 40, 1, 8, 11, 13, 14, 10, 16, 17, 49, 117];
-    for (let i = 0; i < 20; i++) {
-        dataCotizaciones.push(data[0]);
+    let posicionCotizacion = [0, 16, 2, 4, 5, 8, 1, 11, 13, 14, 10, 17, 18, 20, 27, 50, 67, 40,  49, 117];
+    let dataCotizacion = []
+    for (let i = 0; i < posicionCotizacion.length; i++) {
+        dataCotizacion.push(data[0][posicionCotizacion[i]]);
     }
 
-    dataCotizaciones.forEach(element => {
-        dataApi.innerHTML += `<span>${element.Symbol} - ${element.Price} | </span>`;
+    dataCotizacion.forEach(element => {
+        dataApi.innerHTML += ` <span class="text-warning fw-bold">${element.Symbol}</span>  -  $ ${element.Price} <span class="text-dark">||</span>`;
     });
-}
+};
 
 showData();

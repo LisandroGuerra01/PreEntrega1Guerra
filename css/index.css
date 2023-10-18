@@ -51,7 +51,7 @@ header nav.barra div.collapse .btn-group:hover {
 }
 
 main {
-    background: linear-gradient(to right, #0c356a3a, #d5ffd048);
+    background: linear-gradient(to right, #839ed375, #faffe871);
     background-size: 200% 100%;
     animation: colorChange 4s infinite alternate;
 }
@@ -68,14 +68,14 @@ main {
 }
 
 .zocalo {
-    height: 33px;
+    height: 50px;
 }
 
 .api {
     width: max-content;
     height: 80%;
     white-space: nowrap;
-    animation: slide 50s linear infinite;
+    animation: slide 70s linear infinite;
 }
 
 /*FOOTER*/
@@ -97,9 +97,6 @@ footer .footer-pagos a:hover {
 
 /* MEDIA QUERIES */
 @media (max-width: 767.98px) {
-    header {
-        height: 35vh;
-    }
 
     header h2.titulo {
         top: 17%;
